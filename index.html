@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DEWLABZ Research Collective — Knowledge Distilled. Like Dew.</title>
+<meta name="description" content="DEWLABZ: an independent research collective advancing the state of the art in unspecified domains. Currently pre-revenue. Always in Phase 1.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpolygon points='16,2 28,9 28,23 16,30 4,23 4,9' fill='%231b4332' stroke='%232a9d8f' stroke-width='1.5'/%3E%3Cpath d='M16,9 C16,9 10,16 10,20 a6,6 0 0,0 12,0 C22,16 16,9 16,9Z' fill='%232a9d8f'/%3E%3Ctext x='16' y='29' font-size='5' font-family='monospace' font-weight='bold' fill='%23e9c46a' text-anchor='middle' letter-spacing='1'%3EDL%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --teal:#2a9d8f; --teal-dark:#21867a; --teal-deep:#164d45;
+  --forest:#1b4332; --forest-deep:#112b20;
+  --amber:#e9c46a; --amber-dark:#c9a230;
+  --bg:#f2f5f7; --card:#ffffff; --ink:#1a1a2e;
+  --muted:#5e6c7a; --rule:#d8dde3; --red:#c1292e;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.65 system-ui,-apple-system,'Segoe UI',sans-serif}
+a{color:var(--teal-dark)}
+a:focus-visible,button:focus-visible,input:focus-visible,
+select:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.container{max-width:900px;margin:0 auto;padding:0 20px}
+
+/* ── Header ─────────────────────────────── */
+header.lab{background:linear-gradient(var(--forest),var(--forest-deep));color:#e8f0eb;border-bottom:3px solid var(--teal)}
+.masthead{display:flex;align-items:center;gap:18px;padding:16px 0}
+.masthead .wordmark{flex:1}
+.masthead .org-label{font-size:.68rem;letter-spacing:.26em;text-transform:uppercase;color:#8eb8a8;margin-bottom:2px}
+.masthead h1{font:bold clamp(1.3rem,4vw,2rem)/1.1 system-ui,sans-serif;margin:0;letter-spacing:-.01em}
+.masthead .tagline{font-size:.82rem;color:#8eb8a8;margin-top:4px;font-style:italic}
+.series-badge{
+  font:bold .65rem system-ui,sans-serif;letter-spacing:.12em;
+  background:rgba(233,196,106,.15);border:1px solid var(--amber);
+  color:var(--amber);padding:3px 10px;text-transform:uppercase;
+  white-space:nowrap;align-self:center;flex-shrink:0
+}
+nav.lab{background:var(--forest-deep);border-bottom:1px solid #0d201a}
+nav.lab ul{display:flex;flex-wrap:wrap;list-style:none;margin:0;padding:0}
+nav.lab a{
+  display:block;padding:8px 15px;color:#c8ddd5;text-decoration:none;
+  font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;
+  border-right:1px solid rgba(255,255,255,.06)
+}
+nav.lab a:hover{background:rgba(42,157,143,.18);color:#e8f0eb}
+nav.lab .pivot-nav a{color:var(--amber)}
+
+/* ── Ticker ──────────────────────────────── */
+.ticker{background:#e0ede9;border-bottom:1px solid var(--rule);overflow:hidden;white-space:nowrap;font-size:.72rem;color:#3a4f45}
+.ticker .track{display:inline-block;padding:5px 0;animation:tick 70s linear infinite}
+.ticker b{color:var(--teal-dark)}
+@keyframes tick{from{transform:translateX(100vw)}to{transform:translateX(-100%)}}
+
+/* ── Sections ────────────────────────────── */
+main{padding:24px 0 12px}
+section.panel{
+  background:var(--card);border:1px solid var(--rule);border-radius:4px;
+  margin:0 0 22px;box-shadow:0 1px 4px rgba(0,0,0,.04);scroll-margin-top:12px
+}
+section.panel>h2{
+  margin:0;padding:8px 14px;background:#ecf2f0;border-bottom:1px solid var(--rule);
+  font:bold .72rem system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;
+  color:#2e4a40;border-radius:4px 4px 0 0
+}
+.panel-body{padding:18px 20px}
+.panel-body p{margin:.5em 0}
+
+/* ── Badges ──────────────────────────────── */
+.badge{
+  display:inline-block;font:bold .65rem system-ui,sans-serif;
+  letter-spacing:.1em;padding:3px 9px;border-radius:3px;
+  text-transform:uppercase;vertical-align:middle;cursor:default
+}
+.badge-teal{background:#e0f4f2;color:var(--teal-dark);border:1px solid #9fd3cd}
+.badge-amber{background:#fdf3dc;color:#7a5500;border:1px solid #e4c454}
+.badge-red{background:#fce8e8;color:var(--red);border:1px solid #e8a0a2}
+.badge-grey{background:#f0f2f4;color:var(--muted);border:1px solid #c4cdd6}
+.badge-blue{background:#e8f0ff;color:#1a5ccc;border:1px solid #9ab8f0}
+
+/* ── Hero ────────────────────────────────── */
+.hero-status{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.mission{
+  font:.95rem/1.85 system-ui,sans-serif;
+  border-left:3px solid var(--teal);padding-left:16px;margin:14px 0
+}
+
+/* ── Progress meter ──────────────────────── */
+.meter-wrap{margin:16px 0}
+.meter-label{
+  display:flex;justify-content:space-between;
+  font-size:.72rem;color:var(--muted);margin-bottom:5px;letter-spacing:.04em
+}
+.meter-bar{height:8px;background:var(--rule);border-radius:4px;overflow:hidden}
+.meter-fill{
+  height:100%;width:0%;background:linear-gradient(90deg,var(--teal-dark),var(--teal));
+  border-radius:4px;transition:width 1.8s cubic-bezier(.1,.8,.2,1)
+}
+
+/* ── Pivot counter ───────────────────────── */
+.pivot-area{display:flex;gap:22px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.pivot-display{font-family:'Courier New',monospace}
+.pivot-label{font-size:.62rem;letter-spacing:.2em;color:var(--muted);text-transform:uppercase}
+.pivot-num{font-size:2.4rem;font-weight:bold;color:var(--forest);line-height:1;transition:color .25s,transform .2s}
+.pivot-num.flash{color:var(--teal);transform:scale(1.06)}
+.btn-pivot{
+  font:bold .75rem system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--teal);color:white;border:none;border-radius:3px;
+  padding:10px 22px;cursor:pointer;box-shadow:0 2px 8px rgba(42,157,143,.32);
+  transition:background .15s,box-shadow .15s
+}
+.btn-pivot:hover{background:var(--teal-dark)}
+.btn-pivot:active{transform:translateY(1px);box-shadow:none}
+.btn-pivot[disabled]{background:#8a9c96;cursor:default;transform:none;box-shadow:none}
+.pivot-note{font:italic .78rem system-ui,sans-serif;color:var(--muted);margin-top:7px}
+
+/* ── Research cards ──────────────────────── */
+.research-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:16px}
+.research-card{border:1px solid var(--rule);border-radius:4px;padding:16px;background:var(--bg)}
+.research-card .card-title{font:bold .85rem system-ui,sans-serif;margin:8px 0 5px;letter-spacing:.02em}
+.research-card .card-desc{font-size:.78rem;color:var(--muted);line-height:1.55}
+
+/* ── Experiment log ──────────────────────── */
+.exp-entry{border-bottom:1px solid var(--rule);padding:14px 0}
+.exp-entry:last-child{border-bottom:0}
+.exp-id{font:bold .68rem 'Courier New',monospace;color:var(--teal-dark);letter-spacing:.06em}
+.exp-title{font:bold .9rem system-ui,sans-serif;margin:4px 0 6px}
+.exp-body{font-size:.8rem;color:var(--muted);line-height:1.6}
+.exp-meta{font-size:.68rem;color:#a0adb5;margin-top:6px;letter-spacing:.04em}
+
+/* ── Team ────────────────────────────────── */
+.team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.team-card{border:1px solid var(--rule);border-radius:4px;padding:16px;text-align:center;background:var(--bg)}
+.team-avatar{
+  width:52px;height:52px;border-radius:50%;background:var(--forest);
+  margin:0 auto 10px;display:flex;align-items:center;justify-content:center;
+  font:bold 1rem 'Courier New',monospace;color:var(--amber);border:2px solid var(--teal)
+}
+.team-name{font:bold .85rem system-ui,sans-serif;margin:0 0 3px}
+.team-title{font-size:.72rem;color:var(--teal-dark);margin:0 0 7px}
+.team-status{font:italic .72rem system-ui,sans-serif;color:var(--muted)}
+
+/* ── Investors ───────────────────────────── */
+.inv-row{display:flex;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--rule);flex-wrap:wrap}
+.inv-row:last-child{border-bottom:0}
+.inv-name{font:bold .82rem 'Courier New',monospace;flex:1 1 180px}
+.inv-meta{font-size:.72rem;color:var(--muted)}
+.inv-meta b{color:var(--ink)}
+
+/* ── Discovery call form ─────────────────── */
+.call-form .row{margin:0 0 14px}
+.call-form label{display:block;font:bold .72rem system-ui,sans-serif;letter-spacing:.06em;margin-bottom:5px}
+.call-form input[type=text],
+.call-form select{
+  width:100%;max-width:400px;padding:7px 10px;
+  border:1px solid #c4cdd6;border-radius:3px;
+  background:#fafbfc;font:14px system-ui,sans-serif;color:var(--ink)
+}
+.call-form select{cursor:pointer}
+.btn-primary{
+  font:bold .75rem system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--forest);color:white;border:none;border-radius:3px;
+  padding:9px 22px;cursor:pointer;box-shadow:0 2px 6px rgba(27,67,50,.3);
+  transition:background .15s
+}
+.btn-primary:hover{background:var(--teal-deep)}
+.btn-primary:active{transform:translateY(1px)}
+.btn-primary[disabled]{background:#8a9c96;cursor:default;transform:none;box-shadow:none}
+.call-note{font-size:.68rem;color:var(--muted);margin-top:10px}
+
+/* ── Stamp impression ────────────────────── */
+.form-relative{position:relative}
+.impression{
+  position:absolute;z-index:4;pointer-events:none;
+  font:bold 1.35rem 'Courier New',monospace;letter-spacing:.14em;
+  color:var(--teal-dark);border:4px double var(--teal);border-radius:5px;
+  padding:4px 14px;transform:rotate(-7deg);opacity:.88;
+  mix-blend-mode:multiply;
+  -webkit-mask-image:radial-gradient(ellipse at 45% 55%,#000 50%,rgba(0,0,0,.5) 80%,rgba(0,0,0,.8) 100%);
+          mask-image:radial-gradient(ellipse at 45% 55%,#000 50%,rgba(0,0,0,.5) 80%,rgba(0,0,0,.8) 100%)
+}
+@keyframes slam{
+  0%{transform:rotate(-7deg) scale(2.8);opacity:0}
+  60%{transform:rotate(-7deg) scale(.94);opacity:.95}
+  100%{transform:rotate(-7deg) scale(1);opacity:.88}
+}
+.impression.slam{animation:slam .28s cubic-bezier(.2,.9,.3,1.2) both}
+
+/* ── Pivot history list ───────────────────── */
+.pivot-dl dt{font:.78rem 'Courier New',monospace;color:var(--teal-dark);margin-top:10px;font-weight:bold}
+.pivot-dl dd{margin:2px 0 0;font-size:.8rem;color:var(--muted)}
+
+/* ── Certificate ─────────────────────────── */
+#certificate{
+  display:none;margin-top:24px;
+  background:#f8fdf8;border:3px double var(--teal);padding:24px;
+  text-align:center;border-radius:4px
+}
+#certificate h3{font:normal 1.3rem system-ui,sans-serif;margin:0 0 8px;color:var(--forest)}
+#certificate .certbody{font:.85rem/1.9 system-ui,sans-serif}
+#certificate .certname{font:bold 1rem 'Courier New',monospace;color:var(--teal-dark)}
+#certificate .certfoot{font:italic .72rem system-ui,sans-serif;color:var(--muted);margin-top:10px}
+
+/* ── Footer ──────────────────────────────── */
+footer.lab{
+  background:linear-gradient(var(--forest),var(--forest-deep));color:#8eb8a8;
+  border-top:3px solid var(--teal);margin-top:30px;padding:26px 0;font-size:.72rem
+}
+footer.lab a{color:#c8ddd5}
+.footer-cols{display:flex;gap:32px;flex-wrap:wrap;margin-bottom:18px}
+.footer-col{flex:1 1 150px}
+.footer-col h4{
+  font:bold .65rem system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;
+  color:#8eb8a8;margin:0 0 8px
+}
+.footer-col ul{list-style:none;margin:0;padding:0}
+.footer-col li{margin:4px 0}
+.legal{color:#5e8a76;line-height:1.85;border-top:1px solid #1e5c3c;padding-top:14px}
+.visitor{font-family:'Courier New',monospace;color:#5e8a76;margin-top:8px}
+.visitor b{background:#112b20;padding:1px 6px;color:var(--amber);letter-spacing:.12em}
+
+/* ── Toast ───────────────────────────────── */
+#toast{
+  position:fixed;right:16px;bottom:16px;z-index:50;max-width:340px;
+  background:var(--forest);color:#e8f0eb;border:1px solid var(--teal);
+  border-radius:4px;box-shadow:0 4px 18px rgba(0,0,0,.28);
+  padding:12px 16px;font-size:.8rem;display:none
+}
+.toast-head{
+  font:bold .62rem system-ui,sans-serif;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--amber);border-bottom:1px solid rgba(255,255,255,.12);
+  padding-bottom:5px;margin-bottom:7px
+}
+@keyframes toastin{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
+#toast.show{display:block;animation:toastin .22s ease-out}
+
+@media(max-width:600px){
+  .masthead{gap:12px;flex-wrap:wrap}
+  .series-badge{order:3;width:100%}
+  .footer-cols{gap:20px}
+  .team-grid,.research-grid{grid-template-columns:1fr}
+  #toast{left:16px;max-width:none}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .ticker .track{animation:none;padding-left:8px}
+  .impression.slam,.pivot-num.flash,#toast.show{animation:none;transform:none}
+}
+</style>
+</head>
+<body>
+
+<header class="lab">
+  <div class="container masthead">
+    <!-- DEWLABZ logomark: hex + droplet -->
+    <svg width="72" height="72" viewBox="0 0 80 80" role="img" aria-label="DEWLABZ logomark: a teal droplet inside a hexagonal frame">
+      <polygon points="40,3 72,21 72,59 40,77 8,59 8,21" fill="#112b20" stroke="#2a9d8f" stroke-width="2"/>
+      <circle cx="40" cy="40" r="21" fill="none" stroke="#2a9d8f" stroke-width=".8" opacity=".45"/>
+      <path d="M40,17 C40,17 27,32 27,43 a13,13 0 0,0 26,0 C53,32 40,17 40,17Z" fill="#2a9d8f" opacity=".9"/>
+      <ellipse cx="36" cy="39" rx="3" ry="5" fill="white" opacity=".28"/>
+      <text x="40" y="70" font-size="8.5" font-family="'Courier New',monospace" font-weight="bold" fill="#e9c46a" text-anchor="middle" letter-spacing="2">DL</text>
+    </svg>
+    <div class="wordmark">
+      <div class="org-label">Research Collective</div>
+      <h1>DEWLABZ</h1>
+      <div class="tagline">Knowledge distilled. Like dew.</div>
+    </div>
+    <div class="series-badge">SERIES A &nbsp;&#9646;&nbsp; PENDING</div>
+  </div>
+  <nav class="lab" aria-label="Main navigation">
+    <div class="container">
+      <ul>
+        <li><a href="#mission">Mission</a></li>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#log">Experiment Log</a></li>
+        <li><a href="#team">Team</a></li>
+        <li><a href="#investors">Investors</a></li>
+        <li><a href="#discovery-call">Discovery Call</a></li>
+        <li class="pivot-nav" id="pivotNavSlot" hidden><a href="#pivots">Pivot History</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<div class="ticker" aria-hidden="true">
+  <span class="track">
+    <b>UPDATE:</b> DEWLABZ has completed its Q3 re-pivot and entered the Q4 counter-pivot phase. This is considered traction.
+    &nbsp;&bull;&nbsp;
+    <b>MEMO:</b> Series A fundraising is ongoing. It is always ongoing. The target is undisclosed. The current total is less than the target.
+    &nbsp;&bull;&nbsp;
+    <b>RESEARCH ALERT:</b> All active experiments remain in Phase 1. Phase 2 is scheduled for Q5. There is no Q5.
+    &nbsp;&bull;&nbsp;
+    <b>ADVISORY:</b> The whiteboard is full. This is a KPI. We are proud of the whiteboard.
+    &nbsp;&bull;&nbsp;
+    <b>NOTE:</b> This domain was previously occupied. Both prior tenants have been documented in the experiment log. Their research was Phase 1, in its own way.
+  </span>
+</div>
+
+<main class="container">
+
+  <!-- ── MISSION ── -->
+  <section class="panel" id="mission">
+    <h2>Mission Statement — Desk of the Founding Principal</h2>
+    <div class="panel-body">
+      <div class="hero-status">
+        <span class="badge badge-amber">STATUS: PRE-REVENUE</span>
+        <span class="badge badge-teal">PHASE 1 — ONGOING</span>
+        <span class="badge badge-grey">FOUNDED: Q3 (APPROX.)</span>
+      </div>
+      <p class="mission">DEWLABZ is an independent research collective advancing the frontier of applied ambiguity. We believe that the most important questions are the ones no one has asked yet — and we have not asked them yet either, but we are very close to narrowing down the space in which they might live.</p>
+      <p style="font-size:.85rem">This domain was acquired through our Domain Opportunity Pipeline (DOP) from its previous stewards. We honor their legacy by operating in a different direction entirely.</p>
+      <div class="meter-wrap">
+        <div class="meter-label">
+          <span>Series A — Funding Progress</span>
+          <span>3%</span>
+        </div>
+        <div class="meter-bar"><div class="meter-fill" id="fundBar"></div></div>
+        <p style="font-size:.7rem;color:var(--muted);margin:.5em 0 0">Target: undisclosed. Current: less than target. Rate: consistent with current. Runway: Q5 (aspirational). There is no Q5.</p>
+      </div>
+      <div class="pivot-area">
+        <div class="pivot-display">
+          <div class="pivot-label">Documented Pivots</div>
+          <div class="pivot-num" id="pivotNum">0</div>
+        </div>
+        <div>
+          <button class="btn-pivot" id="pivotBtn">EXECUTE PIVOT</button>
+          <p class="pivot-note" id="pivotNote">Each pivot is a learning. We have not pivoted yet. This is also a learning.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── RESEARCH ── -->
+  <section class="panel" id="research">
+    <h2>Active Research Areas — Portfolio Overview</h2>
+    <div class="panel-body">
+      <p style="font-size:.82rem;margin-top:0">DEWLABZ maintains a diverse portfolio of research initiatives across convergent, divergent, and orthogonal domains. All projects are in active development. "Active" is defined as: existing.</p>
+      <div class="research-grid">
+        <div class="research-card">
+          <div><span class="badge badge-teal">PHASE 1</span></div>
+          <div class="card-title">Project DISTILLATE</div>
+          <div class="card-desc">Quantifying the qualitative nature of qualitative metrics. Early results suggest that things are happening at measurable rates. Analysis ongoing. Timeline: Q5.</div>
+        </div>
+        <div class="research-card">
+          <div><span class="badge badge-amber">PIVOT</span></div>
+          <div class="card-title">Project HORIZON</div>
+          <div class="card-desc">Originally a platform for platform-adjacent platforms. After three pivots, now focused on "platform proximity." After one more, now focused on something else. Scope: evolving.</div>
+        </div>
+        <div class="research-card">
+          <div><span class="badge badge-red">SUNSETTING</span></div>
+          <div class="card-title">Project AURORA</div>
+          <div class="card-desc">A moonshot. The moon was farther than modeled. We have re-classified as a "sun-adjacent shot" and are currently sunsetting it. The irony is not lost on us.</div>
+        </div>
+        <div class="research-card">
+          <div><span class="badge badge-teal">PHASE 1</span></div>
+          <div class="card-title">Project DEWDROP</div>
+          <div class="card-desc">Ongoing research into domain acquisition and legacy documentation. dewlabz.com is both the instrument and the output of this experiment. This is considered elegant by the research team (one person).</div>
+        </div>
+        <div class="research-card">
+          <div><span class="badge badge-grey">PENDING IRB</span></div>
+          <div class="card-title">Project MUNICIPAL</div>
+          <div class="card-desc">Prior-tenant domain analysis. We encountered a dissolved municipal district (population: 0) and an interstellar outreach program during due diligence. Ethics board referral filed. Board has not met.</div>
+        </div>
+        <div class="research-card">
+          <div><span class="badge badge-blue">IDEATION</span></div>
+          <div class="card-title">Project AFTER HORIZON</div>
+          <div class="card-desc">A follow-on to Project HORIZON, to be scoped once HORIZON is scoped. Internally referred to as "the horizon horizon." This is the most advanced project in the portfolio.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── EXPERIMENT LOG ── -->
+  <section class="panel" id="log">
+    <h2>Experiment Log — Recent Entries (Auto-Synchronized)</h2>
+    <div class="panel-body">
+      <p style="font-size:.82rem;margin-top:0">DEWLABZ maintains meticulous records of all experimental activity. Entries are generated by our proprietary Research Activity Documentation Engine (RADE) and represent a complete, if abstract, history of the collective&#8217;s outputs to date.</p>
+      <div class="exp-entry">
+        <span class="exp-id">EXP-2026-047</span>
+        <div class="exp-title">Domain Heritage Audit — Prior Occupant Analysis (Dual)</div>
+        <div class="exp-body">Due diligence on dewlabz.com revealed two documented prior occupants. Occupant A: an interstellar outreach program operating from a parked domain, exhibiting high enthusiasm and a user-facing game involving specimen acquisition via tractor beam. Transmission ID: 42. Occupant B: the Office of Remaining Affairs, District 11 (dissolved 1994 by clerical error), a municipal entity maintaining a government website and a staff of one named Gerald. It was always Tuesday there. Both prior tenants were conducting research of a kind. DEWLABZ has acquired the domain and will continue their work in a more scalable, investor-ready direction that we will define by Q5.</div>
+        <div class="exp-meta">RESEARCHER: Founding Principal &nbsp;·&nbsp; STATUS: Completed &nbsp;·&nbsp; OUTCOME: Acquisition approved, Gerald notified (no response)</div>
+      </div>
+      <div class="exp-entry">
+        <span class="exp-id">EXP-2026-039</span>
+        <div class="exp-title">Parking Strategy Synthesis — Cross-Domain Learning Extraction</div>
+        <div class="exp-body">Both prior tenants had independently identified &#8220;parking&#8221; as an unresolved problem (one literally, one metaphorically &#8212; the district&#8217;s parking was described as &#8220;still unresolved,&#8221; and the interstellar tenant was parallel-parking in low orbit). DEWLABZ is applying learnings from both approaches. Our hypothesis: parking is an unsolved problem because no one has properly framed it as a research opportunity. We have now framed it. Phase 2 involves solving it. Phase 2 is Q5.</div>
+        <div class="exp-meta">RESEARCHER: VP of Learnings &nbsp;·&nbsp; STATUS: Phase 1 &nbsp;·&nbsp; OUTCOME: Learnings documented, framing complete, solution pending</div>
+      </div>
+      <div class="exp-entry">
+        <span class="exp-id">EXP-2026-031</span>
+        <div class="exp-title">Logomark Iteration — Competitive Seal Analysis</div>
+        <div class="exp-body">Competitive analysis of prior-occupant visual systems. Occupant B (District 11) used a municipal seal: navy background, gold ring, small civic building, Latin motto &#8220;Adhuc Hic&#8221; (Still Here). Occupant A (tnkr.fun) used animated UFOs with tractor beams and a real-time starfield. DEWLABZ elected a hexagonal logomark with a droplet motif, in teal, with &#8220;DL&#8221; in amber on a forest background. This tested well with audiences who had not previously seen it. Latin was considered and declined. Our motto is in English because we are accessible and innovative and do not want to look up the Latin.</div>
+        <div class="exp-meta">RESEARCHER: Director of Applied Uncertainty &nbsp;·&nbsp; STATUS: Completed &nbsp;·&nbsp; OUTCOME: Logomark shipped</div>
+      </div>
+      <div class="exp-entry">
+        <span class="exp-id">EXP-2026-019</span>
+        <div class="exp-title">Q1 Retrospective — Synthesis of Q1 Learnings (Preliminary)</div>
+        <div class="exp-body">A retrospective was conducted on all Q1 activities. Key finding: Q1 occurred. This is consistent with our models. Learnings were extracted, documented, and synthesized into a learnings document that summarizes the learnings. A stamp was applied to indicate the retrospective was complete. The stamp was not chained, unlike a stamp we encountered in District 11&#8217;s documentation, which was both chained and labeled &#8220;Property of the District. The chain is policy.&#8221; DEWLABZ&#8217;s stamp is unchained and available. It is also, presently, un-owned. This is on the roadmap.</div>
+        <div class="exp-meta">RESEARCHER: Head of Phase Architecture &nbsp;·&nbsp; STATUS: Completed &nbsp;·&nbsp; OUTCOME: Q1 acknowledged; Q2 scheduled for later</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TEAM ── -->
+  <section class="panel" id="team">
+    <h2>Team Directory — Current Roster (Full-Time Equivalents: Approximate)</h2>
+    <div class="panel-body">
+      <p style="font-size:.82rem;margin-top:0">DEWLABZ is staffed by a distributed team of generalists, specialists, and individuals who are currently determining which of those they are. All team members are remote-first, async-preferred, and deeply committed to the mission (mission definition: Phase 1).</p>
+      <div class="team-grid">
+        <div class="team-card">
+          <div class="team-avatar">FP</div>
+          <div class="team-name">Founding Principal</div>
+          <div class="team-title">Chief Distillation Officer</div>
+          <div class="team-status">Available for partnerships. Always in a 1:1 with the mirror.</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">AU</div>
+          <div class="team-name">Dir. of Applied Uncertainty</div>
+          <div class="team-title">Research Lead — Ambiguous Domains</div>
+          <div class="team-status">Currently being onboarded. Onboarding is in Phase 1.</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">VL</div>
+          <div class="team-name">VP of Learnings</div>
+          <div class="team-title">Head of Insight Extraction</div>
+          <div class="team-status">Translating insights into learnable learnings since Q3 (approx.).</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">PA</div>
+          <div class="team-name">Head of Phase Architecture</div>
+          <div class="team-title">Phase 1 Infrastructure Lead</div>
+          <div class="team-status">Designing the transition from Phase 1 to Phase 1.</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar">PS</div>
+          <div class="team-name">Pivot Specialist</div>
+          <div class="team-title">Director of Strategic Reorientation</div>
+          <div class="team-status">Role currently being redefined. This is considered meta-research.</div>
+        </div>
+        <div class="team-card">
+          <div class="team-avatar" style="font-size:1.3rem">&#x1F916;</div>
+          <div class="team-name">The Bot</div>
+          <div class="team-title">Automated Research Assistant</div>
+          <div class="team-status">Filing correctly, to no one. This is its purpose and it is at peace.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── INVESTORS ── -->
+  <section class="panel" id="investors">
+    <h2>Investor Relations — Stakeholder Registry</h2>
+    <div class="panel-body">
+      <p style="font-size:.82rem;margin-top:0">DEWLABZ is proud to have received expressions of interest, verbal encouragement, or ambient awareness from the following parties. All investment amounts are undisclosed. This is by choice. It is also because disclosing them would be a very short sentence.</p>
+      <div class="inv-row">
+        <div class="inv-name">[REDACTED] VENTURES</div>
+        <div class="inv-meta">Round: <b>Undisclosed</b> &nbsp;|&nbsp; Amount: <b>Undisclosed</b> &nbsp;|&nbsp; Status: <em>&#8220;Very supportive. Very.&#8221;</em></div>
+      </div>
+      <div class="inv-row">
+        <div class="inv-name">[REDACTED] CAPITAL PARTNERS</div>
+        <div class="inv-meta">Round: <b>Pre-seed</b> &nbsp;|&nbsp; Amount: <b>Undisclosed</b> &nbsp;|&nbsp; Status: <em>&#8220;Cautiously optimistic. Emphasis on cautiously.&#8221;</em></div>
+      </div>
+      <div class="inv-row">
+        <div class="inv-name">[REDACTED] HOLDINGS II, LLC</div>
+        <div class="inv-meta">Round: <b>Also pre-seed</b> &nbsp;|&nbsp; Amount: <b>The same amount</b> &nbsp;|&nbsp; Status: <em>&#8220;Asked not to be listed here. Listed here.&#8221;</em></div>
+      </div>
+      <div class="inv-row">
+        <div class="inv-name">SELF (FOUNDING PRINCIPAL)</div>
+        <div class="inv-meta">Round: <b>Ongoing</b> &nbsp;|&nbsp; Amount: <b>Some savings</b> &nbsp;|&nbsp; Status: <em>&#8220;Concerned but committed. Mostly committed.&#8221;</em></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── DISCOVERY CALL ── -->
+  <section class="panel" id="discovery-call">
+    <h2>Schedule a Discovery Call — Intake Form</h2>
+    <div class="panel-body">
+      <p style="font-size:.82rem;margin-top:0">DEWLABZ welcomes discovery calls from potential partners, investors, researchers, and anyone who has arrived here and cannot fully account for why. Please complete the intake form. A calendar invite will be sent from <code>noreply@dewlabz.com</code>. We always send the calendar invite.</p>
+      <div class="form-relative" id="callFormWrap">
+        <form class="call-form" id="callForm" autocomplete="off">
+          <div class="row">
+            <label for="callerName">Your name or organization</label>
+            <input type="text" id="callerName" name="callerName" maxlength="80" placeholder="As it appears on your most recent documents">
+          </div>
+          <div class="row">
+            <label for="disruptTarget">What are you trying to disrupt?</label>
+            <select id="disruptTarget" name="disruptTarget">
+              <option value="">&#8212; Select one &#8212;</option>
+              <option>A market (unspecified)</option>
+              <option>An industry (legacy)</option>
+              <option>Myself, primarily</option>
+              <option>The concept of disruption itself</option>
+              <option>Physics</option>
+              <option>Nothing specific. Something will come to me.</option>
+              <option>All of the above (including physics)</option>
+            </select>
+          </div>
+          <div class="row">
+            <label for="callWindow">Preferred availability window</label>
+            <select id="callWindow" name="callWindow">
+              <option value="">&#8212; Select one &#8212;</option>
+              <option>Q4 (this year)</option>
+              <option>Q4 (next year)</option>
+              <option>Q4 (unspecified year)</option>
+              <option>Q5 (aspirational)</option>
+              <option>Whenever the algorithm opens a slot</option>
+              <option>I will take whatever I can get</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-primary" id="callSubmit">Request Discovery Call</button>
+          <p class="call-note">Your information is processed locally and not transmitted. DEWLABZ does not have the infrastructure to receive it. This is a known capability gap and is on the Phase 2 roadmap. Phase 2 is Q5.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAQ ── -->
+  <section class="panel" id="faq">
+    <h2>Frequently Asked Questions &amp; Frequently Unanswered Answers</h2>
+    <div class="panel-body" style="font-size:.82rem">
+      <p><b>Q: What does DEWLABZ do?</b><br>A: Applied research across ambiguous domains. We are narrowing down which domains.</p>
+      <p><b>Q: Is this a real company?</b><br>A: DEWLABZ is a research collective. &#8220;Real&#8221; is a classification we are currently reviewing.</p>
+      <p><b>Q: What happened to the previous sites on this domain?</b><br>A: One was a dissolved municipal government that never stopped filing. The other was enthusiastic about extraterrestrials and had a tractor beam. Both were doing their best. We have acquired the domain and are continuing their work in a more pivot-friendly direction.</p>
+      <p><b>Q: I was looking for something else.</b><br>A: Everyone is. We have documented this. It is in the experiment log under &#8220;domain heritage audit.&#8221;</p>
+      <p><b>Q: What is Phase 2?</b><br>A: Phase 2 is Q5. There is no Q5. This is why Phase 2 remains aspirational and thus preserves optionality, which is considered strategically valuable.</p>
+      <p><b>Telephone:</b> Available. Number undisclosed.<br>
+         <b>Email:</b> <code>noreply@dewlabz.com</code> — this address sends but does not receive. It is very productive in one direction.<br>
+         <b>Office location:</b> Remote-first. The office is wherever the work is. The work is here. We are working on being somewhere.</p>
+    </div>
+  </section>
+
+  <!-- ── PIVOT HISTORY (hidden until pivots accumulate) ── -->
+  <section class="panel" id="pivots" hidden>
+    <h2>Pivot History — Full Strategic Record</h2>
+    <div class="panel-body">
+      <p style="font-size:.82rem;margin-top:0">The following is a complete and accurate record of all DEWLABZ strategic pivots. Each pivot is a learning. Each learning is an asset. The assets are on our cap table at a valuation to be determined by someone with a spreadsheet and more optimism than is strictly warranted.</p>
+      <dl class="pivot-dl" id="pivotLog"></dl>
+      <div id="certificate" aria-live="polite">
+        <h3>Certificate of Sustained Disruption</h3>
+        <div class="certbody">
+          Be it known that <span class="certname">THE BEARER OF THIS SCREEN</span><br>
+          has witnessed DEWLABZ execute eleven (11) documented pivots in a single session,<br>
+          which is a company record and also the number we started with.<br>
+          You are hereby appointed <b>Disruption Witness (Volunteer, Non-Compensated, Non-Binding)</b>.<br>
+        </div>
+        <div class="certfoot">Duties: none. Equity: 0.000%. Vesting: N/A. Parking: still an open problem.<br>
+        The Founding Principal is proud of you. The Founding Principal is also in a 1:1. Always in a 1:1.</div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="lab">
+  <div class="container">
+    <div class="footer-cols">
+      <div class="footer-col">
+        <h4>DEWLABZ</h4>
+        <ul>
+          <li>Research Collective</li>
+          <li>Founded: Q3 (approx.)</li>
+          <li>Status: Pre-revenue</li>
+          <li>Phase: 1, always 1</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Research</h4>
+        <ul>
+          <li><a href="#research">Active Projects</a></li>
+          <li><a href="#log">Experiment Log</a></li>
+          <li>Phase 2 (Q5)</li>
+          <li>Ethics Board (Q6)</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Prior Tenants</h4>
+        <ul>
+          <li><a href="https://tnkr.fun">tnkr.fun</a> — interstellar</li>
+          <li><a href="https://district11.net">district11.net</a> — municipal</li>
+          <li>dewlabz.com — current</li>
+          <li>Next domain: Q5</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal &amp; Compliance</h4>
+        <ul>
+          <li>&#169; DEWLABZ Research Collective</li>
+          <li>All rights reserved</li>
+          <li>(Rights definition: Phase 2)</li>
+          <li>IRB status: Pending</li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      DEWLABZ Research Collective is an independent entity. DEWLABZ is not responsible for: outcomes of any kind, the disruption of anything, the prior tenants of this domain, parking (still unresolved), the sky (referred to tnkr.fun), or Phase 2.<br>
+      This site is best viewed with an open mind, a growth mindset, and a reasonable tolerance for ambiguity. A modern browser also helps.<br>
+      Accessibility commitment: DEWLABZ is committed to an accessible research experience. The commitment is in Phase 1. We will get there. It is on the roadmap.
+    </div>
+    <div class="visitor">Research sessions logged: <b id="visitorCount">0,000,001</b> <span style="font-style:italic">(You. You are a data point. Welcome to the dataset.)</span></div>
+  </div>
+</footer>
+
+<div id="toast" role="status" aria-live="assertive">
+  <div class="toast-head">System Notification &#8212; DEWLABZ RADE</div>
+  <div id="toastBody"></div>
+</div>
+
+<noscript><div class="container" style="padding:12px 20px;font-size:.75rem;color:var(--muted)">Interactive research features require JavaScript. DEWLABZ has documented this as a known capability gap. It is on the roadmap. The roadmap is Phase 2. Phase 2 is Q5.</div></noscript>
+
+<script>
+(()=>{
+"use strict";
+const $=id=>document.getElementById(id);
+const store={
+  get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},
+  set:(k,v)=>{try{localStorage.setItem(k,String(v))}catch(e){}},
+};
+const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+/* ── toast ── */
+let toastTimer=null;
+function toast(text,ms){
+  const el=$('toast');$('toastBody').textContent=text;
+  el.classList.remove('show');void el.offsetWidth;el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>el.classList.remove('show'),ms||5000);
+}
+
+/* ── Series A meter ── */
+setTimeout(()=>{const b=$('fundBar');if(b)b.style.width='3%';},500);
+
+/* ── pivot counter ── */
+const toastMessages=[
+  'Pivot executed. DEWLABZ is now facing a new direction. The old direction was fine. This one is also fine.',
+  'Pivot 2 logged. The new direction has itself been pivoted. We are now in a meta-directional phase.',
+  'Pivot 3: The VP of Learnings has been notified. The VP of Learnings is translating this into a learning.',
+  'Pivot 4: Our investor has been informed. Response: "okay." We are treating this as a positive signal.',
+  'Pivot 5: We are halfway to ten, which is a round number. Half of a round number is also notable.',
+  'Pivot 6: The whiteboard has been updated. The whiteboard is full again. We are proud of the whiteboard.',
+  'Pivot 7: Phase 1 has been re-entered. We are refreshed. Phase 1 is our home. We have always lived here.',
+  'Pivot 8: The Pivot Specialist was consulted. The Pivot Specialist pivoted. This is considered a conflict of interest and also completely expected.',
+  'Pivot 9: Three more pivots will break the record. The current record is 8. You are at 9. You are ahead of the record. This is not the record.',
+  'Pivot 10: One pivot remains before the certificate is issued. The Founding Principal is preparing remarks.',
+];
+const historyItems=[
+  'Pivot 1 — Original direction abandoned. New direction: undetermined. Confidence: high. Rationale: undocumented.',
+  'Pivot 2 — "Undetermined" found to be too vague. Pivoted to "to be determined." More precise.',
+  'Pivot 3 — Platform focus deprecated in favor of platform-adjacent focus. Platform definition: pending.',
+  'Pivot 4 — "Adjacent" evaluated. Found to be spatial. Pivoted to "conceptually proximate." More scalable.',
+  'Pivot 5 — "Conceptually proximate" tested poorly with investors. Pivoted to "aligned." Investors: undisclosed.',
+  'Pivot 6 — Revisited "adjacent." Reinstated. It tested fine originally. The problem was framing.',
+  'Pivot 7 — Head of Phase Architecture proposed "pre-adjacent." Adopted by unanimous vote (1 vote).',
+  'Pivot 8 — Previous record of 7 pivots reached. Decided to continue for research purposes.',
+  'Pivot 9 — Pivot 9 was briefly considered optional. It was not optional. It was pivotal.',
+  'Pivot 10 — Considered not pivoting. This lasted eight seconds. Pivot 10 was then executed.',
+  'Pivot 11 — Certificate issued. DEWLABZ has achieved full directional escape velocity from its original premise. The original premise is fine. We are elsewhere now.',
+];
+
+let pivots=parseInt(store.get('dl_pivots')||'0',10)||0;
+const pivotBtn=$('pivotBtn'), pivotNum=$('pivotNum'), pivotNote=$('pivotNote');
+const pivotLog=$('pivotLog'), pivotsSection=$('pivots'), pivotNavSlot=$('pivotNavSlot');
+
+function renderHistory(n){
+  pivotLog.innerHTML='';
+  for(let i=0;i<Math.min(n,historyItems.length);i++){
+    const dt=document.createElement('dt');dt.textContent='Q'+(i+3)+' — Documented Pivot '+(i+1);
+    const dd=document.createElement('dd');dd.textContent=historyItems[i];
+    pivotLog.appendChild(dt);pivotLog.appendChild(dd);
+  }
+}
+
+function applyState(n,fresh){
+  pivotNum.textContent=String(n);
+  if(n>=1){
+    pivotsSection.hidden=false;
+    pivotNavSlot.hidden=false;
+    renderHistory(n);
+  }
+  if(n>=11){
+    pivotBtn.disabled=true;
+    pivotBtn.textContent='ALL PIVOTS EXECUTED';
+    pivotNote.textContent='The pivot cycle is complete. DEWLABZ is wherever it is now. This is the destination.';
+    $('certificate').style.display='block';
+    document.title='DEWLABZ (FORMERLY [REDACTED]) — Certificate Issued';
+    if(fresh) toast('The Founding Principal has issued a Certificate of Sustained Disruption. Print it out. Frame it. Frame it in the spirit of DEWLABZ, which is: loosely, and without nails.',8000);
+  } else if(n===5&&fresh){
+    toast('The VP of Learnings has flagged this session as statistically unusual. This is the most pivoting observed in a single visit. The VP of Learnings is, technically, impressed.',5500);
+  }
+}
+
+if(pivots>0) applyState(pivots,false);
+
+pivotBtn.addEventListener('click',()=>{
+  if(pivotBtn.disabled)return;
+  pivots++;
+  store.set('dl_pivots',pivots);
+  if(!reduced){
+    pivotNum.classList.remove('flash');
+    void pivotNum.offsetWidth;
+    pivotNum.classList.add('flash');
+    setTimeout(()=>pivotNum.classList.remove('flash'),350);
+  }
+  applyState(pivots,true);
+  if(pivots<=toastMessages.length) toast(toastMessages[pivots-1]);
+});
+
+/* ── discovery call form ── */
+const callForm=$('callForm'), callSubmit=$('callSubmit'), callWrap=$('callFormWrap');
+let calls=0;
+const callReplies=[
+  'Your discovery call has been scheduled. A calendar invite has been sent from noreply@dewlabz.com. Please do not reply to noreply. The inbox is full of prior calendar invites.',
+  'A second discovery call has been scheduled. We recommend consolidating. The calendar invite has been sent. You have our attention and also our only available Q4 slot.',
+  'This is your third discovery call request. You may be the investor we have been looking for. Calendar invite sent. A second copy will also be sent. You deserve two.',
+];
+callForm.addEventListener('submit',e=>{
+  e.preventDefault();calls++;
+  const imp=document.createElement('div');
+  imp.className='impression'+(reduced?'':' slam');
+  imp.textContent='SCHEDULED';
+  imp.style.cssText='right:8%;top:12%;left:auto';
+  callWrap.appendChild(imp);
+  callSubmit.disabled=true;
+  callSubmit.textContent='Call Scheduled';
+  toast(callReplies[Math.min(calls-1,callReplies.length-1)],6500);
+  setTimeout(()=>{
+    imp.remove();
+    callSubmit.disabled=false;
+    callSubmit.textContent='Request Another Discovery Call';
+  },5000);
+});
+
+/* ── visitor counter ── */
+const visEl=$('visitorCount');
+if(visEl){
+  const n=(parseInt(store.get('dl_visits')||'0',10)||0)+1;
+  store.set('dl_visits',n);
+  const raw=String(n).padStart(7,'0');
+  visEl.textContent=raw.slice(0,1)+','+raw.slice(1,4)+','+raw.slice(4);
+}
+})();
+</script>
+</body>
+</html>
